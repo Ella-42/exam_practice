@@ -1,4 +1,4 @@
-#42
+# 42
 
 This repository is all about preparing myself for the exams of 42.
 
