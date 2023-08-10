@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 20:04:02 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/08/10 01:00:18 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/08/10 22:27:08 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int ac, char **av)
 	while ((fret = fscanf(op_file, "%c %f %f %f %f %c\n", &d.type, &d.x, &d.y, &d.width, &d.height, &d.filler)))
 	{
 		if (fret == -1)
-			return (0);
+			break ;
 		else if (fret == 6)
 			;
 		else
