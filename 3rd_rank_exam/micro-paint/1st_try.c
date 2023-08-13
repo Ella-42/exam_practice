@@ -6,7 +6,7 @@
 /*   By: lpeeters <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/09 20:04:02 by lpeeters          #+#    #+#             */
-/*   Updated: 2023/08/11 23:34:05 by lpeeters         ###   ########.fr       */
+/*   Updated: 2023/08/13 22:54:59 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ typedef struct s_drawing
 	char	filler;
 }			t_drawing;
 
-int	calc(t_drawing *d, int y, int x)
+int	calc_coord(t_drawing *d, int y, int x)
 {
-	if (y < d->y || x < d->x || y > d->y + d->height || x > d->x + d->height)
+	if (y < d->y || x < d->x || d->y + d->height < y || d->x + d->width < x)
 		return (-1);
-	//else if ()
-		//return (1);
+	else if (y - d->y < 1 || x - d->x < 1 || d->y + d->height - y < 1 || d->x + d->width - x < 1)
+		return (1);
 	else
 		return (0);
 }
@@ -50,24 +50,18 @@ int	replace_chars(t_draw_zone *dz, t_drawing *d)
 {
 	int	y;
 	int	x;
-	int	ret;
+	int	calc_val;
 
-	if (d->height <= 0 || d->width <= 0 || (d->type != 'r' && d->type != 'R'))
+	if (d->height <= 0 || d->width <= 0 || (d->type != EMPTY && d->type != FILLED))
 		return (1);
-	printf("%c\n", d->type);
-	printf("%f\n", d->x);
-	printf("%f\n", d->y);
-	printf("%f\n", d->width);
-	printf("%f\n", d->height);
-	printf("%c\n", d->filler);
 	y = 0;
 	while (dz->zone[y] != NULL)
 	{
 		x = 0;
 		while (dz->zone[y][x] != '\0')
 		{
-			ret = calc(d, y, x);
-			if ((ret == 0 && d->type == 'R') || ret == 1)
+			calc_val = calc_coord(d, y, x);
+			if ((calc_val == 0 && d->type == FILLED) || calc_val == 1)
 				dz->zone[y][x] = d->filler;
 			x++;
 		}
@@ -91,7 +85,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	op_file = fopen(av[1], "r");
-	if (op_file == NULL || fscanf(op_file, "%i %i %c\n", &dz.width, &dz.height, &dz.bg) != 3 || 1 > dz.width || dz.width > 300 || 1 > dz.height || dz.height > 300)
+	if (op_file == NULL || fscanf(op_file, "%d %d %c\n", &dz.width, &dz.height, &dz.bg) != 3 || 1 > dz.width || dz.width > 300 || 1 > dz.height || dz.height > 300)
 	{
 		write(1, "Error: Operation file corrupted\n", 32);
 		return (1);
