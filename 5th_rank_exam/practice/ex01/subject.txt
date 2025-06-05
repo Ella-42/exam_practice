@@ -1,0 +1,38 @@
+Exercise 01 – Polymorphic Power
+
+Files to turn in: Warlock.hpp, Warlock.cpp, main.cpp + previous files
+Authorized libraries: <string>, <iostream>
+
+🧙‍♂️ Summary:
+
+Your wizard was lonely. It’s time to introduce a Warlock class that inherits from Wizard. Warlocks are Wizards, but they introduce themselves differently and have unique powers (for now, just one: shouting).
+
+🛠 Instructions:
+
+    Create a Warlock class that inherits publicly from Wizard.
+
+    Override the introduce() method to this format:
+
+        <name>: *grins* They call me <name>, <title>. Fear me.
+
+Add a method:
+
+void shoutSpell(void) const;
+
+Output:
+
+    <name>: 🔥 *casts Fireball* 🔥
+
+🧪 Example:
+
+int main(void)
+{
+    Warlock tom("Tom", "the cursed one");
+    tom.introduce();
+    tom.shoutSpell();
+}
+
+Output:
+
+Tom: *grins* They call me Tom, the cursed one. Fear me.
+Tom: 🔥 *casts Fireball* 🔥

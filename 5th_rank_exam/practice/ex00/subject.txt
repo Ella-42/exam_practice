@@ -1,0 +1,29 @@
+🟢 Warm-up Exercise: Wizard Class (Mini-Warlock)
+
+Goal: Practice class syntax, Coplien form, const correctness, and access control.
+📋 Specs:
+
+    Class Wizard
+
+    Private attributes:
+    std::string name, std::string title
+
+    Constructor takes both name and title
+
+    Delete:
+
+        default constructor
+
+        copy constructor
+
+        copy assignment operator
+
+    Getters:
+    getName() and getTitle() → return const std::string&, callable on const
+
+    Setter:
+    setTitle(const std::string&)
+
+    Method:
+    introduce() → prints:
+    "<name>: I am <name>, <title>!"
