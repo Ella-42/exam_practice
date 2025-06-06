@@ -1,0 +1,38 @@
+🧙‍ Apprentice Wizard
+
+Files to turn in: Apprentice.cpp/hpp + previous files.
+
+Objective:
+    Introduce a new class Apprentice that inherits from Wizard.
+
+🧠 Requirements:
+
+Class: Apprentice
+
+    Inherits publicly from Wizard
+
+Attributes:
+
+    level
+
+Apprentice will take name, title and level
+
+Methods:
+
+    getLevel() will return level.
+
+    levelUp() will increase level by 1.
+
+    introduce() must now also include the level, like:
+
+        <name>: Hello, I am Apprentice <name>, level <level>, also known as <title>.
+
+⚠️ Constraints:
+
+    C++98.
+
+    Coplien form.
+
+    No function implemention in .hpp files.
+
+    No using directives (using namespace std;).
