@@ -1,0 +1,30 @@
+#ifndef ATARGET_HPP
+# define ATARGET_HPP
+
+# include "ASpell.hpp"
+
+# include <string>
+
+class ASpell;
+
+class ATarget
+{
+	public:
+		ATarget();
+		ATarget(const std::string&);
+
+		ATarget(const ATarget&);
+		const ATarget& operator=(const ATarget&);
+
+		const std::string& getType() const;
+
+		virtual ATarget* clone() const = 0;
+		void getHitBySpell(const ASpell&) const;
+
+		virtual ~ATarget();
+
+	protected:
+		std::string type;
+};
+
+#endif
