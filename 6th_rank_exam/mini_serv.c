@@ -6,7 +6,7 @@
 /*   By: lpeeters <lpeeters@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 21:47:23 by lpeeters          #+#    #+#             */
-/*   Updated: 2025/09/11 03:44:16 by lpeeters         ###   ########.fr       */
+/*   Updated: 2025/09/11 23:50:16 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,27 @@ void error(const char *string, int fd)
 
 	close(fd);
 	exit(EXIT_FAILURE);
+}
+
+void all_send(int sender_fd, fd_set fds, int last_fd, const char *string)
+{
+	for (int fd = 4; fd <= last_fd; fd++)
+		if (fd != sender_fd && FD_ISSET(fd, &fds)) write(fd, string, strlen(string));
+}
+
+int extract_message(char *buffer, char *message)
+{
+	for (uint32_t i = 0; buffer[i]; i++)
+	{
+		if (buffer[i] == '\n')
+		{
+			strcpy(message, buffer);
+			message[i] = '\0';
+			strcpy(buffer, buffer + i + 1);
+			return (1);
+		}
+	}
+	return (0);
 }
 
 int main(int arguments, char *argument_list[])
@@ -71,12 +92,34 @@ int main(int arguments, char *argument_list[])
 
 				if (client_fd > last_fd) last_fd = client_fd;
 				FD_SET(client_fd, &fds);
-				clients[client_fd].id = last_id++;
+				clients[client_fd].id = last_id;
 				memset(&(clients[client_fd].buffer), 0, 1024);
 
-				write(STDOUT_FILENO, "New client accepted\n", 20);
+				sprintf(clients[0].buffer, "server: client %lu just arrived\n", last_id++);
+				all_send(client_fd, fds, last_fd, clients[0].buffer);
 
 				continue;
+			}
+
+			short received = recv(fd, clients[fd].buffer, 1024, 0);
+			if (received == -1) continue;
+
+			if (received == 0)
+			{
+				FD_CLR(fd, &fds);
+				close(fd);
+
+				sprintf(clients[2].buffer, "server: client %lu just left\n", clients[fd].id);
+				all_send(fd, fds, last_fd, clients[2].buffer);
+
+				continue;
+			}
+
+			char message[2048];
+			while (extract_message(clients[fd].buffer, clients[1].buffer))
+			{
+				sprintf(message, "client %lu: %s\n", clients[fd].id, clients[1].buffer);
+				all_send(fd, fds, last_fd, message);
 			}
 		}
 	}
