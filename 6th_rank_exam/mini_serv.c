@@ -6,7 +6,7 @@
 /*   By: lpeeters <lpeeters@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 21:47:23 by lpeeters          #+#    #+#             */
-/*   Updated: 2025/09/12 23:19:48 by lpeeters         ###   ########.fr       */
+/*   Updated: 2025/09/13 16:54:35 by lpeeters         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ typedef struct s_client
 {
 	size_t id;
 	char buffer[1024];
-	uint32_t used;
+	uint16_t used;
 }	t_client;
 
 void error(const char *string, int fd)
@@ -39,11 +39,11 @@ void all_send(int sender_fd, fd_set fds, int last_fd, const char *string)
 		if (fd != sender_fd && FD_ISSET(fd, &fds)) write(fd, string, strlen(string));
 }
 
-bool extract_message(char *received, char *extracted, uint32_t *end)
+bool extract_message(char *received, char *extracted, uint16_t *end)
 {
 	memset(extracted, '\0', 1024);
 
-	uint32_t i;
+	uint16_t i;
 	for (i = 0; received[i] && received[i] != '\n'; i++)
 		extracted[i] = received[i];
 
@@ -51,9 +51,9 @@ bool extract_message(char *received, char *extracted, uint32_t *end)
 		return *end = i, false;
 
 	i++;
-	uint32_t j = 0;
-	while (received[i])
-		received[j++] = received[i++];
+	uint16_t j;
+	for (j = 0; received[i]; j++, i++)
+		received[j] = received[i];
 	memset(received + j, '\0', 1024 - j);
 
 	return *end = j, true;
